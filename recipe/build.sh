@@ -4,6 +4,13 @@ set -euxo pipefail
 rm -rf build || true
 mkdir build
 cd build
+# CUDA 12.8 onwards defines all architectures by default
+if [ -z ${CUDAARCHS+x} ]; then
+  CUDAARCHS=$(conda run -n libmobility nvcc --list-gpu-code | tr ' ' '\n' \
+      | grep -E '^sm_[0-9]+$' \
+      | sed 's/sm_//;s/$/-real/' \
+      | paste -sd';' -)
+fi
 CMAKE_FLAGS="${CMAKE_ARGS} -DCMAKE_PREFIX_PATH=${PREFIX} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_BUILD_TYPE=Release"
 CMAKE_FLAGS+=" -DCMAKE_VERBOSE_MAKEFILE=y"
 CMAKE_FLAGS+=" -DFETCHCONTENT_SOURCE_DIR_UAMMD=${SRC_DIR}/uammd-src"
