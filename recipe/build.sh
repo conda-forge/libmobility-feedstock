@@ -6,7 +6,7 @@ mkdir build
 cd build
 # CUDA 12.8 onwards defines all architectures by default
 if [ -z ${CUDAARCHS+x} ]; then
-  CUDAARCHS=$(conda run -n libmobility nvcc --list-gpu-code | tr ' ' '\n' \
+  CUDAARCHS=$(nvcc --list-gpu-code | tr ' ' '\n' \
       | grep -E '^sm_[0-9]+$' \
       | sed 's/sm_//;s/$/-real/' \
       | paste -sd';' -)
