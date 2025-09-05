@@ -1,5 +1,5 @@
 {% set name = "libmobility" %}
-{% set version = "0.8.0" %}
+{% set version = "0.9.1" %}
 
 {% set cuda_compiler_version = cuda_compiler_version | default("None") %}
 
@@ -9,7 +9,7 @@ package:
 
 source:
   - url: https://github.com/stochasticHydroTools/libMobility/archive/refs/tags/{{ version }}.tar.gz
-    sha256: 5948c98aec0f9433b37c14935f9c7c503bd2744252a8e89af72d2999fe841020
+    sha256: e9969d42cd132105df3fd5cdce3e2e2a00a331e45a6b095ffc14a707d8d8cc54
   - url: https://github.com/RaulPPelaez/UAMMD/archive/refs/tags/v2.8.0.tar.gz
     sha256: 95f7d7a6d66c43b2b8e4ac9f93b1e7ed3299f7ae989ddfc921fbe9dbbc4591b5
     folder: uammd-src
@@ -20,7 +20,7 @@ build:
   skip: true  # [win or not (cuda_compiler_version or "").startswith("12")]
   # Debugging skips
   # skip: true  # [py != 312]
-  number: 2
+  number: 1
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
   rpaths:
     - lib/
