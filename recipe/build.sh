@@ -10,6 +10,9 @@ if [ -z ${CUDAARCHS+x} ]; then
       | grep -E '^sm_[0-9]+$' \
       | sed 's/sm_//;s/$/-real/' \
       | paste -sd';' -)
+  # Add the virtual architecture of the latest
+  LATEST_ARCH=$(echo $CUDAARCHS | tr ';' '\n' | sort -V | tail -n1 | sed 's/-real//')
+  CUDAARCHS="${CUDAARCHS};${LATEST_ARCH}"
 fi
 CMAKE_FLAGS="${CMAKE_ARGS} -DCMAKE_PREFIX_PATH=${PREFIX} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_BUILD_TYPE=Release"
 CMAKE_FLAGS+=" -DCMAKE_VERBOSE_MAKEFILE=y"
