@@ -18,7 +18,7 @@ build:
   skip: true  # [win or not (cuda_compiler_version or "").startswith("12")]
   # Debugging skips
   # skip: true  # [py != 312]
-  number: 0
+  number: 1
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
   rpaths:
     - lib/
