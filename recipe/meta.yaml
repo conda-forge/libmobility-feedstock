@@ -1,5 +1,5 @@
 {% set name = "libmobility" %}
-{% set version = "1.0.0" %}
+{% set version = "1.1.0" %}
 
 {% set cuda_compiler_version = cuda_compiler_version | default("None") %}
 
@@ -9,7 +9,7 @@ package:
 
 source:
   - url: https://github.com/stochasticHydroTools/libMobility/archive/refs/tags/v{{ version }}.tar.gz
-    sha256: a9d31080e3af3daddced67e48f93ac2b8585ae4e4cdeb2ad09aaba36f4910fa9
+    sha256: 43e664d6edb23353af976953d860b90ab081de2ccac8bb6d2d660fa42c185d5a
   - url: https://github.com/RaulPPelaez/UAMMD/archive/refs/tags/v3.0.0.tar.gz
     sha256: 61af3ba221b9d4804955594bd73e54d1c4a793f2c7e33373b3cce148f7ab77b1
     folder: uammd-src
