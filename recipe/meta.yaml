@@ -15,7 +15,8 @@ source:
     folder: uammd-src
 
 build:
-  skip: true  # [win or not cuda_compiler_version or osx]
+  skip: true  # [win or osx]
+  skip: true # [cuda_compiler_version == "None"]
   number: 1
   string: cuda{{ cuda_compiler_version | replace('.', '') }}py{{ CONDA_PY }}h{{ PKG_HASH }}_{{ PKG_BUILDNUM }}
   rpaths:
