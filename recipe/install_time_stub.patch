@@ -1,0 +1,128 @@
+From fe6e9ecf26391c330cc5a3c9e9afaaf2b7739e29 Mon Sep 17 00:00:00 2001
+From: Ryker Fish <rfish@mines.edu>
+Date: Wed, 11 Feb 2026 17:33:36 -0700
+Subject: [PATCH] fix to install-time stub generation for BLAS access
+
+---
+ solvers/CMakeLists.txt              | 32 ++++++++++++++---------------
+ solvers/DPStokes/CMakeLists.txt     |  9 +-------
+ solvers/NBody/CMakeLists.txt        |  9 +-------
+ solvers/PSE/CMakeLists.txt          |  9 +-------
+ solvers/SelfMobility/CMakeLists.txt |  9 +-------
+ 5 files changed, 20 insertions(+), 48 deletions(-)
+
+diff --git a/solvers/CMakeLists.txt b/solvers/CMakeLists.txt
+index c9f8fb4..b43e407 100644
+--- a/solvers/CMakeLists.txt
++++ b/solvers/CMakeLists.txt
+@@ -1,23 +1,23 @@
+-function(setup_nanobind_module NAME)
++function(compile_uammd_module NAME)
++uammd_setup_target(libMobility_${NAME})
++
+   nanobind_add_module(
+-    ${NAME}
+-    STABLE_ABI
+-    python_wrapper.cu
++      ${NAME}
++      STABLE_ABI
++      python_wrapper.cu
+   )
++  uammd_setup_target(${NAME})
++  target_link_libraries(${NAME} PRIVATE libMobility_${NAME})
++  install(TARGETS libMobility_${NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
++  install(TARGETS ${NAME} LIBRARY DESTINATION ${Python_SITEARCH}/libMobility)
+ 
+   nanobind_add_stub(
+-    ${NAME}_stub
+-    MODULE ${NAME}
+-    OUTPUT ${NAME}.pyi
+-    DEPENDS ${NAME}
+-    MARKER_FILE py.typed
+-  )
+-
+-  install(
+-    FILES
+-      ${CMAKE_CURRENT_BINARY_DIR}/${NAME}.pyi
+-      ${CMAKE_CURRENT_BINARY_DIR}/py.typed
+-    DESTINATION ${Python_SITEARCH}/libMobility
++      ${NAME}_stub
++      INSTALL_TIME
++      MODULE ${NAME}
++      OUTPUT "${Python_SITEARCH}/libMobility/${NAME}.pyi"
++      PYTHON_PATH "${Python_SITEARCH}/libMobility"
++      MARKER_FILE "${Python_SITEARCH}/libMobility/py.typed"
+   )
+ 
+ endfunction()
+diff --git a/solvers/DPStokes/CMakeLists.txt b/solvers/DPStokes/CMakeLists.txt
+index 2420fb1..c99838b 100644
+--- a/solvers/DPStokes/CMakeLists.txt
++++ b/solvers/DPStokes/CMakeLists.txt
+@@ -1,10 +1,3 @@
+ set(NAME DPStokes)
+ add_library(libMobility_${NAME} SHARED extra/uammd_wrapper.cu)
+-uammd_setup_target(libMobility_${NAME})
+-
+-setup_nanobind_module(${NAME})
+-
+-uammd_setup_target(${NAME})
+-target_link_libraries(${NAME} PRIVATE libMobility_${NAME})
+-install(TARGETS libMobility_${NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+-install(TARGETS ${NAME} LIBRARY DESTINATION ${Python_SITEARCH}/libMobility)
++compile_uammd_module(${NAME})
+\ No newline at end of file
+diff --git a/solvers/NBody/CMakeLists.txt b/solvers/NBody/CMakeLists.txt
+index 3b430df..1fab030 100644
+--- a/solvers/NBody/CMakeLists.txt
++++ b/solvers/NBody/CMakeLists.txt
+@@ -1,10 +1,3 @@
+ set(NAME NBody)
+ add_library(libMobility_${NAME} SHARED extra/NbodyRPY.cu)
+-uammd_setup_target(libMobility_${NAME})
+-
+-setup_nanobind_module(${NAME})
+-
+-uammd_setup_target(${NAME})
+-target_link_libraries(${NAME} PRIVATE libMobility_${NAME})
+-install(TARGETS libMobility_${NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+-install(TARGETS ${NAME} LIBRARY DESTINATION ${Python_SITEARCH}/libMobility)
++compile_uammd_module(${NAME})
+\ No newline at end of file
+diff --git a/solvers/PSE/CMakeLists.txt b/solvers/PSE/CMakeLists.txt
+index 1ba6093..44166cf 100644
+--- a/solvers/PSE/CMakeLists.txt
++++ b/solvers/PSE/CMakeLists.txt
+@@ -1,10 +1,3 @@
+ set(NAME PSE)
+ add_library(libMobility_${NAME} SHARED extra/uammd_wrapper.cu)
+-uammd_setup_target(libMobility_${NAME})
+-
+-setup_nanobind_module(${NAME})
+-
+-uammd_setup_target(${NAME})
+-target_link_libraries(${NAME} PRIVATE libMobility_${NAME})
+-install(TARGETS libMobility_${NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+-install(TARGETS ${NAME} LIBRARY DESTINATION ${Python_SITEARCH}/libMobility)
++compile_uammd_module(${NAME})
+\ No newline at end of file
+diff --git a/solvers/SelfMobility/CMakeLists.txt b/solvers/SelfMobility/CMakeLists.txt
+index 022f440..ac042dc 100644
+--- a/solvers/SelfMobility/CMakeLists.txt
++++ b/solvers/SelfMobility/CMakeLists.txt
+@@ -1,10 +1,3 @@
+ set(NAME SelfMobility)
+ add_library(libMobility_${NAME} SHARED selfmobility.cu)
+-uammd_setup_target(libMobility_${NAME})
+-
+-setup_nanobind_module(${NAME})
+-
+-uammd_setup_target(${NAME})
+-target_link_libraries(${NAME} PRIVATE libMobility_${NAME})
+-install(TARGETS libMobility_${NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+-install(TARGETS ${NAME} LIBRARY DESTINATION ${Python_SITEARCH}/libMobility)
++compile_uammd_module(${NAME})
+\ No newline at end of file
+-- 
+2.34.1
+
