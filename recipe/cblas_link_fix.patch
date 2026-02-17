@@ -1,0 +1,26 @@
+From 36ae0ea71645dc4a04c0081b6807f83d1df16154 Mon Sep 17 00:00:00 2001
+From: Ryker Fish <rfish@mines.edu>
+Date: Mon, 16 Feb 2026 12:42:20 -0700
+Subject: [PATCH] trying to fix stubgen in conda
+
+---
+ solvers/CMakeLists.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/solvers/CMakeLists.txt b/solvers/CMakeLists.txt
+index b43e407..73e4c0d 100644
+--- a/solvers/CMakeLists.txt
++++ b/solvers/CMakeLists.txt
+@@ -7,7 +7,8 @@ uammd_setup_target(libMobility_${NAME})
+       python_wrapper.cu
+   )
+   uammd_setup_target(${NAME})
+-  target_link_libraries(${NAME} PRIVATE libMobility_${NAME})
++  target_link_libraries(libMobility_${NAME} PRIVATE cblas)
++  target_link_libraries(${NAME} PRIVATE libMobility_${NAME} cblas)
+   install(TARGETS libMobility_${NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+   install(TARGETS ${NAME} LIBRARY DESTINATION ${Python_SITEARCH}/libMobility)
+ 
+-- 
+2.43.0
+
