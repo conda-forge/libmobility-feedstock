@@ -10,8 +10,8 @@ package:
 source:
   - url: https://github.com/stochasticHydroTools/libMobility/archive/refs/tags/v{{ version }}.tar.gz
     sha256: b64eb1d4512ff68accb94a30884673f4025e82efb3886fc1406c6f4c5a626d46
-  - url: https://github.com/RaulPPelaez/UAMMD/archive/refs/tags/v3.0.0.tar.gz
-    sha256: 61af3ba221b9d4804955594bd73e54d1c4a793f2c7e33373b3cce148f7ab77b1
+  - url: https://github.com/RaulPPelaez/UAMMD/archive/refs/tags/v3.0.1.tar.gz
+    sha256: 97638c304687aa382137b3db1af48db1702fc130e03e6507d69abbf17ac379bf
     folder: uammd-src
 
 build:
